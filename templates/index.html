@@ -471,7 +471,7 @@
         formData.append('photos[]', files[i]);
     }
 
-    fetch("http://127.0.0.1:5000/add_review", {
+    fetch(`${process.env.REACT_APP_API_URL}/add_review`, {
         method: "POST",
         
     body: formData // Use FormData directly

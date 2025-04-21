@@ -211,7 +211,7 @@
     let allReviews = [];
 
     document.addEventListener("DOMContentLoaded", function () {
-      fetch("http://127.0.0.1:5000/get_reviews")
+      fetch(`${process.env.REACT_APP_API_URL}/get_reviews`)
         .then(response => response.json())
         .then(reviews => {
           allReviews = reviews;
@@ -324,7 +324,7 @@
     async function submitRating(reviewId, rating) {
   console.log(`Submitting rating: Review ID = ${reviewId}, Rating = ${rating}`);
 
-  const response = await fetch('http://127.0.0.1:5000/update_rating', {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/update_rating`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -365,7 +365,7 @@ function displayReviews(reviews) {
     card.classList.add("card");
 
     const reviewId = review._id;
-    let imagesHtml = review.images.length > 0 ? `<img src="http://127.0.0.1:5000${review.images[0]}" alt="Review Image">` : "";
+    let imagesHtml = review.images.length > 0 ? `<img src="${process.env.REACT_APP_API_URL}${review.images[0]}" alt="Review Image">` : "";
 
     const starsHtml = `
       <div class="stars" data-review-id="${reviewId}">
@@ -414,7 +414,7 @@ function displayReviews(reviews) {
 }
 
     async function fetchReviews() {
-      const response = await fetch("http://127.0.0.1:5000/get_reviews");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/get_reviews`);
       const reviews = await response.json();
       return reviews;
     }
@@ -427,7 +427,7 @@ function displayReviews(reviews) {
   const comment = textarea.value.trim();
   if (!comment) return alert("Comment cannot be empty.");
 
-  fetch("http://127.0.0.1:5000/add_comment", {
+  fetch(`${process.env.REACT_APP_API_URL}/add_comment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
