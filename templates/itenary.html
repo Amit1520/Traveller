@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Your Travel Itinerary</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+   /* Header Styling */
+   header {
+            background-color: #f8f9fc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: #060606;
+            margin: 0;
+        }
+
+        nav a {
+            margin: 0 15px;
+            font-size: 1rem;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        nav a:hover {
+            color: #a6ceff;
+            box-shadow: #0073ff;
+        }
+
+    button {
+      width: 100%;
+      background-color: #007BFF;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #itinerary-output {
+      margin-top: 30px;
+      background: #f9f9f9;
+      padding: 20px;
+      border-left: 4px solid #007BFF;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+
+    .loading {
+      text-align: center;
+      color: #555;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+    <header>
+        <h1>Traveller's Verdict</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="Blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+            <a id="profile-link" href="profile.html" style="display: none;">Profile</a>
+            <a id="logout-link" href="#" style="display: none;" onclick="logout()">Logout</a>
+            <a id="login-link" href="login.html">Login</a>
+            <a id="signup-link" class="signup" href="signup.html">Sign Up</a>
+        </nav>
+      </header>
+  <div class="container">
+    <h2>Get Your Personalized Travel Itinerary</h2>
+    <form id="itinerary-form">
+      <label for="destination">Destination:</label>
+      <input type="text" id="destination" required>
+
+      <label for="budget">Budget:</label>
+      <input type="number" id="budget" required>
+
+      <label for="transport">Transport Preference:</label>
+      <select id="transport">
+        <option>Flight</option>
+        <option>Train</option>
+        <option>Bus</option>
+        <option>Car</option>
+      </select>
+
+      <label for="dates">Travel Dates:</label>
+      <input type="text" id="dates" placeholder="e.g., May 10–15">
+
+      <label for="purpose">Purpose:</label>
+      <select id="purpose">
+        <option>Leisure</option>
+        <option>Business</option>
+        <option>Adventure</option>
+        <option>Family</option>
+      </select>
+
+      <button type="submit">Generate Itinerary</button>
+    </form>
+
+    <div id="itinerary-output"></div>
+  </div>
+
+  <script>
+     // Check if user is logged in by checking for the token in localStorage
+     document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem("token");
+
+            if (token) {
+                // If user is logged in, hide login/signup and show profile/logout buttons
+                document.getElementById("profile-link").style.display = "inline-block";
+                document.getElementById("logout-link").style.display = "inline-block";
+                document.getElementById("login-link").style.display = "none";
+                document.getElementById("signup-link").style.display = "none";
+            } else {
+                // If not logged in, show login/signup
+                document.getElementById("login-link").style.display = "inline-block";
+                document.getElementById("signup-link").style.display = "inline-block";
+                document.getElementById("profile-link").style.display = "none";
+                document.getElementById("logout-link").style.display = "none";
+            }
+        });
+
+        // Logout function to clear localStorage and redirect to login page
+        function logout() {
+            localStorage.clear();
+            window.location.href = "login.html";  // Redirect to login page after logout
+        }
+    const form = document.getElementById('itinerary-form');
+    const output = document.getElementById('itinerary-output');
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      output.innerHTML = '<p class="loading">Generating your personalized itinerary...</p>';
+
+      const userInput = {
+        destination: document.getElementById('destination').value,
+        budget: document.getElementById('budget').value,
+        transport: document.getElementById('transport').value,
+        dates: document.getElementById('dates').value,
+        purpose: document.getElementById('purpose').value,
+      };
+
+      try {
+  
+        const response = await fetch('http://127.0.0.1:5000/generate_itinerary', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(userInput)
+});
+
+
+
+  const result = await response.json();
+  console.log("Server response:", result); // <-- Add this
+
+  if (response.ok) {
+    output.innerText = result.itinerary;
+  } else {
+    output.innerHTML = `<p style="color: red;">Error: ${result.error}</p>`;
+  }
+} catch (err) {
+  console.error("Fetch error:", err); // <-- Add this
+  output.innerHTML = '<p style="color: red;">Failed to generate itinerary. Please try again later.</p>';
+}
+
+    });
+  </script>
+</body>
+</html>

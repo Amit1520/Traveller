@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traveller's Verdict - Blog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7faff;
+            color: #333;
+        }
+
+        header {
+            background-color: #f8f9fc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: #0175ff;
+            margin: 0;
+        }
+
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #0175ff;
+            font-weight: bold;
+        }
+
+        .search-bar {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .search-bar input {
+            width: 50%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .keyword-buttons {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .keyword-buttons button {
+            background-color: #0175ff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .keyword-buttons button:hover {
+            background-color: #005bbd;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            transition: transform 0.3s ease;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .comments-section {
+            margin-top: 20px;
+        }
+
+        .comments-section h4 {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .comment-box {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+
+        .comment-submit {
+            margin-top: 10px;
+            background-color: #0175ff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .comment-submit:hover {
+            background-color: #005bbd;
+        }
+
+        .comment-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .comment-list li {
+            background-color: #f7f7f7;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Traveller's Verdict</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="blog.html">Blog</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search for reviews...">
+    </div>
+
+    <div class="keyword-buttons">
+        <button>Business</button>
+        <button>Family</button>
+        <button>Vacation</button>
+    </div>
+
+    <div class="card-container" id="reviewCards"></div>
+
+    <script>
+        let currentUserToken = ''; // Assuming the token is saved in your frontend after login
+
+        // Fetch reviews from backend
+        async function fetchReviews() {
+            try {
+                const response = await fetch('http://localhost:5000/get_reviews');  // Change this URL to your actual backend endpoint
+                const reviews = await response.json();
+                renderReviews(reviews);
+            } catch (error) {
+                console.error('Error fetching reviews:', error);
+            }
+        }
+
+        // Function to render review cards
+        function renderReviews(reviews) {
+            const reviewContainer = document.getElementById("reviewCards");
+            reviewContainer.innerHTML = '';  // Clear any existing content
+
+            reviews.forEach(review => {
+                const card = document.createElement("div");
+                card.classList.add("card");
+                card.setAttribute("data-review-id", review._id); // Store the review ID for later reference
+
+                card.innerHTML = `
+                    <img src="${review.images[0]}" alt="${review.Name}">
+                    <h3>${review.Name}</h3>
+                    <p><strong>Location:</strong> ${review.location}</p>
+                    <p><strong>Purpose:</strong> ${review.purpose}</p>
+                    <p><strong>Budget:</strong> ${review.budget}</p>
+                    <p><strong>Transport:</strong> ${review.transport}</p>
+                    <p><strong>Review:</strong> ${review.review}</p>
+                    <div class="comments-section">
+                        <h4>Comments:</h4>
+                        <textarea id="commentInput-${review._id}" class="comment-box" placeholder="Add a comment..."></textarea>
+                        <button class="comment-submit" onclick="submitComment('${review._id}')">Submit Comment</button>
+                        <ul class="comment-list" id="commentList-${review._id}">
+                            <!-- Comments will be added here -->
+                        </ul>
+                    </div>
+                `;
+                reviewContainer.appendChild(card);
+            });
+        }
+
+        // Submit a comment for a specific review
+        async function submitComment(reviewId) {
+            const commentInput = document.getElementById(`commentInput-${reviewId}`);
+            const commentText = commentInput.value.trim();
+
+            if (commentText === '') {
+                alert("Please write a comment before submitting.");
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/add_comment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentUserToken}`
+                    },
+                    body: JSON.stringify({
+                        reviewId: reviewId,
+                        comment: commentText
+                    })
+                });
+
+                const result = await response.json();
+                if (result.message === "Comment added successfully!") {
+                    addCommentToUI(reviewId, commentText);
+                    commentInput.value = ''; // Clear input field
+                } else {
+                    alert(result.error || 'Something went wrong!');
+                }
+            } catch (error) {
+                console.error('Error submitting comment:', error);
+            }
+        }
+
+        // Add comment to the UI after successful submission
+        function addCommentToUI(reviewId, commentText) {
+            const commentList = document.getElementById(`commentList-${reviewId}`);
+            const newComment = document.createElement("li");
+            newComment.textContent = commentText;
+            commentList.appendChild(newComment);
+        }
+
+        // Call the function to fetch and display reviews when the page loads
+        fetchReviews();
+    </script>
+</body>
+</html>

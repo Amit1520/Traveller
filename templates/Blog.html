@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Traveller's Verdict - Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7faff;
+      color: #333;
+    }
+    /* Header Styling */
+   header {
+            background-color: #f8f9fc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: #060606;
+            margin: 0;
+        }
+
+        nav a {
+            margin: 0 15px;
+            font-size: 1rem;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        nav a:hover {
+            color: #a6ceff;
+            box-shadow: #0073ff;
+        }
+    .search-bar, .filters {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .search-bar input, .filters select {
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin: 5px;
+    }
+    .keyword-buttons {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .keyword-buttons button {
+      background-color: #0175ff;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .keyword-buttons button:hover {
+      background-color: #005bbd;
+    }
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      transition: transform 0.3s ease;
+      padding: 15px;
+      text-align: center;
+    }
+    .card img {
+      width: 100%;
+      height: 200px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .stars span {
+      font-size: 1.5rem;
+      color: rgb(31, 30, 30);
+      cursor: pointer;
+    }
+    .stars .selected {
+      color: gold;
+    }
+    .comment-box {
+      margin-top: 10px;
+    }
+    .comment-box textarea {
+      width: 100%;
+      padding: 5px;
+      resize: vertical;
+    }
+    .comment-box button {
+      margin-top: 5px;
+      padding: 6px 12px;
+      background-color: #0175ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .comment-list {
+      text-align: left;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Traveller's Verdict</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="itenary.html">Generate your itenary</a>
+        <a id="profile-link" href="profile.html" style="display: none;">Profile</a>
+            <a id="logout-link" href="#" style="display: none;" onclick="logout()">Logout</a>
+            <a id="login-link" href="login.html">Login</a>
+            <a id="signup-link" class="signup" href="signup.html">Sign Up</a>
+    </nav>
+  </header>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search reviews...">
+  </div>
+
+  <div class="keyword-buttons">
+    <button onclick="filterByKeyword('Family')">Family</button>
+    <button onclick="filterByKeyword('Vacation')">Vacation</button>
+    <button onclick="filterByKeyword('Budget')">Budget</button>
+    <button onclick="filterByKeyword('Luxury')">Luxury</button>
+    <button onclick="filterByKeyword('Business')">Business</button>
+  </div>
+
+  <div class="filters">
+    <label><strong>Sort by:</strong></label>
+    <select id="sortSelect" onchange="updateDisplay()">
+      <option value="latest">Most Recent</option>
+      <option value="rating">Highest Rated</option>
+    </select>
+
+    <label><strong>Budget:</strong></label>
+    <select id="budgetFilter" onchange="updateDisplay()">
+      <option value="">All</option>
+      <option value="Low">Low</option>
+      <option value="Medium">Medium</option>
+      <option value="High">High</option>
+    </select>
+
+    <label><strong>Transport:</strong></label>
+    <select id="transportFilter" onchange="updateDisplay()">
+      <option value="">All</option>
+      <option value="Car">Car</option>
+      <option value="Bus">Bus</option>
+      <option value="Train">Train</option>
+      <option value="Flight">Flight</option>
+    </select>
+  </div>
+  
+  <main>
+    <h2 style="text-align: center; margin-top: 20px;">User Travel Reviews</h2>
+    <div class="card-container"></div>
+    
+  </main>
+
+  <script>
+     // Check if user is logged in by checking for the token in localStorage
+     document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem("token");
+
+            if (token) {
+                // If user is logged in, hide login/signup and show profile/logout buttons
+                document.getElementById("profile-link").style.display = "inline-block";
+                document.getElementById("logout-link").style.display = "inline-block";
+                document.getElementById("login-link").style.display = "none";
+                document.getElementById("signup-link").style.display = "none";
+            } else {
+                // If not logged in, show login/signup
+                document.getElementById("login-link").style.display = "inline-block";
+                document.getElementById("signup-link").style.display = "inline-block";
+                document.getElementById("profile-link").style.display = "none";
+                document.getElementById("logout-link").style.display = "none";
+            }
+        });
+
+        // Logout function to clear localStorage and redirect to login page
+        function logout() {
+            localStorage.clear();
+            window.location.href = "login.html";  // Redirect to login page after logout
+        }
+    let allReviews = [];
+
+    document.addEventListener("DOMContentLoaded", function () {
+      fetch("http://127.0.0.1:5000/get_reviews")
+        .then(response => response.json())
+        .then(reviews => {
+          allReviews = reviews;
+          updateDisplay();
+        })
+        .catch(error => console.error("Error loading reviews:", error));
+    });
+
+    function updateDisplay() {
+      const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+      const sortType = document.getElementById("sortSelect").value;
+      const budgetFilter = document.getElementById("budgetFilter").value;
+      const transportFilter = document.getElementById("transportFilter").value;
+
+      let filtered = allReviews.filter(r =>
+        r.location.toLowerCase().includes(searchTerm) ||
+        r.purpose.toLowerCase().includes(searchTerm) ||
+        r.review.toLowerCase().includes(searchTerm)
+      );
+
+      if (budgetFilter) filtered = filtered.filter(r => r.budget === budgetFilter);
+      if (transportFilter) filtered = filtered.filter(r => r.transport === transportFilter);
+
+      if (sortType === "latest") {
+        filtered.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      } else if (sortType === "rating") {
+        filtered.sort((a, b) => b.rating - a.rating);
+      }
+
+      if (filtered.length === 0) {
+        document.querySelector(".card-container").innerHTML = "<p style='text-align:center;'>No reviews found for the selected filters.</p>";
+      } else {
+        displayReviews(filtered);
+      }
+    }
+
+    function filterByKeyword(keyword) {
+      document.getElementById("searchInput").value = keyword;
+      updateDisplay();
+    }
+    function displayReviews(reviews) {
+    const container = document.querySelector(".card-container");
+    container.innerHTML = "";
+
+    reviews.forEach(review => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+
+        const reviewId = review._id;
+        let imagesHtml = review.images.length > 0 ? `<img src="${review.images[0]}" alt="Review Image">` : ""; // Use the full URL directly
+
+        const starsHtml = `
+            <div class="stars" data-review-id="${reviewId}">
+                ${[1, 2, 3, 4, 5].map(i => {
+                    const isSelected = i <= review.rating ? "selected" : "";
+                    return `<span data-value="${i}" class="${isSelected}">&#9733;</span>`;
+                }).join("")}
+            </div>
+        `;
+
+        const commentSection = `
+            <div class="comment-box" data-review-id="${reviewId}">
+                <textarea rows="2" placeholder="Add a comment..."></textarea>
+                <button onclick="submitComment('${reviewId}', this)">Submit</button>
+            </div>
+        `;
+
+        const commentsHtml = (review.comments || []).map(c => `<p><strong>${c.user_email}:</strong> ${c.comment}</p>`).join("");
+
+        card.innerHTML = `
+            ${imagesHtml}
+            <h3>${review.location} - ${review.purpose}</h3>
+            <p><strong>${review.Name}</strong></p>
+            <p>${review.review}</p>
+            <p><strong>Budget:</strong> ${review.budget}</p>
+            <p><strong>Transport:</strong> ${review.transport}</p>
+            <p><strong>Average Rating:</strong> ${review.rating.toFixed(1)} (${review.rating_count} ratings)</p>
+            ${starsHtml}
+            ${commentSection}
+            <div class="comment-list">${commentsHtml}</div>
+        `;
+
+        container.appendChild(card);
+    });
+
+    document.querySelectorAll(".stars").forEach(starContainer => {
+        const spans = starContainer.querySelectorAll("span");
+        spans.forEach(span => {
+            span.addEventListener("click", function () {
+                const value = parseInt(this.getAttribute("data-value"));
+                const reviewId = starContainer.getAttribute("data-review-id");
+                submitRating(reviewId, value);
+            });
+        });
+    });
+
+
+      document.querySelectorAll(".stars").forEach(starContainer => {
+        const spans = starContainer.querySelectorAll("span");
+        spans.forEach(span => {
+          span.addEventListener("click", function () {
+            const value = parseInt(this.getAttribute("data-value"));
+            const reviewId = starContainer.getAttribute("data-review-id");
+            submitRating(reviewId, value);
+          });
+        });
+      });
+    }
+
+    async function submitRating(reviewId, rating) {
+  console.log(`Submitting rating: Review ID = ${reviewId}, Rating = ${rating}`);
+
+  const response = await fetch('http://127.0.0.1:5000/update_rating', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      reviewId: reviewId, 
+      rating: rating
+    })
+  });
+
+  if (response.ok) {
+    alert("Rating submitted successfully!");
+    // Update stars after submission
+    updateStarsDisplay(reviewId, rating);
+  } else {
+    const error = await response.json();
+    alert(`Error submitting rating: ${error.error}`);
+  }
+}
+
+function updateStarsDisplay(reviewId, rating) {
+  const stars = document.querySelectorAll(`.stars[data-review-id="${reviewId}"] span`);
+  stars.forEach(star => {
+    const value = parseInt(star.getAttribute('data-value'));
+    if (value <= rating) {
+      star.classList.add('selected');
+    } else {
+      star.classList.remove('selected');
+    }
+  });
+}
+function displayReviews(reviews) {
+  const container = document.querySelector(".card-container");
+  container.innerHTML = "";
+
+  reviews.forEach(review => {
+    const card = document.createElement("div");
+    card.classList.add("card");
+
+    const reviewId = review._id;
+    let imagesHtml = review.images.length > 0 ? `<img src="http://127.0.0.1:5000${review.images[0]}" alt="Review Image">` : "";
+
+    const starsHtml = `
+      <div class="stars" data-review-id="${reviewId}">
+        ${[1, 2, 3, 4, 5].map(i => {
+          const isSelected = i <= review.rating ? "selected" : "";
+          return `<span data-value="${i}" class="${isSelected}">&#9733;</span>`;
+        }).join("")}
+      </div>
+    `;
+
+    const commentSection = `
+      <div class="comment-box" data-review-id="${reviewId}">
+        <textarea rows="2" placeholder="Add a comment..."></textarea>
+        <button onclick="submitComment('${reviewId}', this)">Submit</button>
+      </div>
+    `;
+
+    const commentsHtml = (review.comments || []).map(c => `<p><strong>${c.user_email}:</strong> ${c.comment}</p>`).join("");
+
+    card.innerHTML = `
+      ${imagesHtml}
+      <h3>${review.location} - ${review.purpose}</h3>
+      <p><strong>${review.Name}</strong></p>
+      <p>${review.review}</p>
+      <p><strong>Budget:</strong> ${review.budget}</p>
+      <p><strong>Transport:</strong> ${review.transport}</p>
+      <p><strong>Average Rating:</strong> ${review.rating.toFixed(1)} (${review.rating_count} ratings)</p>
+      ${starsHtml}
+      ${commentSection}
+      <div class="comment-list">${commentsHtml}</div>
+    `;
+
+    container.appendChild(card);
+  });
+
+  document.querySelectorAll(".stars").forEach(starContainer => {
+    const spans = starContainer.querySelectorAll("span");
+    spans.forEach(span => {
+      span.addEventListener("click", function () {
+        const value = parseInt(this.getAttribute("data-value"));
+        const reviewId = starContainer.getAttribute("data-review-id");
+        submitRating(reviewId, value);
+      });
+    });
+  });
+}
+
+    async function fetchReviews() {
+      const response = await fetch("http://127.0.0.1:5000/get_reviews");
+      const reviews = await response.json();
+      return reviews;
+    }
+
+    function submitComment(reviewId, btn) {
+  const token = localStorage.getItem("token");
+  if (!token) return alert("You must be logged in to comment.");
+
+  const textarea = btn.previousElementSibling;
+  const comment = textarea.value.trim();
+  if (!comment) return alert("Comment cannot be empty.");
+
+  fetch("http://127.0.0.1:5000/add_comment", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      reviewId: reviewId,
+      comment: comment
+    })
+  })
+    .then(response => response.json())
+    .then(data => {
+      alert("Comment added successfully!");
+      textarea.value = "";  // Clear the textarea
+
+      // Optionally re-fetch or update comment list dynamically
+      fetchReviews().then(reviews => {
+        allReviews = reviews;
+        updateDisplay();
+      });
+    })
+    .catch(error => {
+      console.error("Error adding comment:", error);
+      alert("Failed to add comment.");
+    });
+}
+</script>
+</body>
+</html>

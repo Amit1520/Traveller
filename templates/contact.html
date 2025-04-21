@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Traveller's Verdict</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f8f9fc;
+        }
+
+        /* Header Styling */
+   header {
+            background-color: #f8f9fc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: #060606;
+            margin: 0;
+        }
+
+        nav a {
+            margin: 0 15px;
+            font-size: 1rem;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        nav a:hover {
+            color: #a6ceff;
+            box-shadow: #0073ff;
+        }
+
+
+        /* Main Section Styling */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .left-section {
+            flex: 1;
+            background-color: #ccc;
+            background-image: url("https://masterpiecer-images.s3.yandex.net/95847cd2805211eebb893a7ca4cc1bdc:upscaled");
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 50px;
+        }
+
+        /* New Image Styling */
+        .left-section img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 8px; /* Rounded corners for the image */
+        }
+
+        .left-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .left-section p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.8rem;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            color: #ccc;
+        }
+
+        .right-section {
+            flex: 1;
+            background-color: #d1d1d1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px;
+        }
+
+        .contact-form {
+            width: 100%;
+            max-width: 500px;
+            background-color: #f8f9fc;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-form h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #0175ff;
+            text-align: center;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 90%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .contact-form input[type="submit"] {
+            background-color: #0175ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 15px;
+
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-form input[type="submit"]:hover {
+            
+            background-color: #005bb5;
+        }
+
+        .address {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1rem;
+            color: #ffffff;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #f8f9fc;
+            padding: 20px 0;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        footer a {
+            color: #0175ff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%; 
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Traveller's Verdict</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="Blog.html">Blog</a>
+            <a href="itenary.html">Generate your itenary</a>
+           <!-- The following links will be conditionally shown based on login status -->
+           <a id="profile-link" href="profile.html" style="display: none;">Profile</a>
+           <a id="logout-link" href="#" style="display: none;" onclick="logout()">Logout</a>
+           <a id="login-link" href="login.html">Login</a>
+           <a id="signup-link" class="signup" href="signup.html">Sign Up</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Left Section: Contact Info, Image and Social Links -->
+        <div class="left-section">
+            <h2>Get in Touch</h2>
+            <p>
+                Have questions, feedback, or want to work with us? We’re here to help! Contact us through the form, and we’ll get back to you as soon as possible.
+            </p>
+
+            <!-- Social Media Links -->
+            <div class="social-links">
+                <a href="https://www.instagram.com" target="_blank" title="Instagram">
+                    <img src="https://img.icons8.com/fluent/48/ffffff/instagram-new.png" alt="Instagram">
+                </a>
+                <a href="https://www.facebook.com" target="_blank" title="Facebook">
+                    <img src="https://img.icons8.com/fluent/48/ffffff/facebook-new.png" alt="Facebook">
+                </a>
+                <a href="https://twitter.com" target="_blank" title="Twitter">
+                    <img src="https://img.icons8.com/fluent/48/ffffff/twitter.png" alt="Twitter">
+                </a>
+            </div>
+
+            <!-- Address -->
+            <div class="address">
+                <p><strong>Address:</strong></p>
+                <p>Team Techie Panda</p>
+                <p>Heritage Institute of Technology<br></br>Anandapur,Mundapara</p>
+                <p>Kolkata</p>
+            </div>
+        </div>
+
+        <!-- Right Section: Contact Form -->
+        <div class="right-section">
+            <div class="contact-form">
+                <h3>Contact Us</h3>
+                <form id="contactForm" method="POST" >
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="message" placeholder="Your Message" rows="6" required></textarea>
+                    <div  class="button"><input type="submit" value="Send Message"></div>
+                </form>
+                <script>
+                     // Check if user is logged in by checking for the token in localStorage
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem("token");
+
+            if (token) {
+                // If user is logged in, hide login/signup and show profile/logout buttons
+                document.getElementById("profile-link").style.display = "inline-block";
+                document.getElementById("logout-link").style.display = "inline-block";
+                document.getElementById("login-link").style.display = "none";
+                document.getElementById("signup-link").style.display = "none";
+            } else {
+                // If not logged in, show login/signup
+                document.getElementById("login-link").style.display = "inline-block";
+                document.getElementById("signup-link").style.display = "inline-block";
+                document.getElementById("profile-link").style.display = "none";
+                document.getElementById("logout-link").style.display = "none";
+            }
+        });
+
+        // Logout function to clear localStorage and redirect to login page
+        function logout() {
+            localStorage.clear();
+            window.location.href = "login.html";  // Redirect to login page after logout
+        }
+const form = document.querySelector("form");
+form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+
+    fetch("http://localhost:5000/send-message", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.text();
+    })
+    .then(data => {
+        alert("Message sent successfully!");
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Failed to send message. Server may be down.");
+    });
+});
+
+                  </script>
+                  
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Techie Panda. All rights reserved.</p>
+        <p>Contact us at :+91 7318788962 or +91 9065755808</p>
+        <p>For further queries: Mail us at travellers.verdict@gmail.com</p>
+    </footer>
+
+</body>
+</html>

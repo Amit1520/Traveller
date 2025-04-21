@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traveller's Verdict</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+         body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #f8f9fc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: #060606;
+            margin: 0;
+        }
+
+        nav a {
+            margin: 0 15px;
+            font-size: 1rem;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #a6ceff;
+            box-shadow: #0073ff;
+        }
+        /* Main Section Styling */
+        main {
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 0 10px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            border-radius: 8px 8px 0 0;
+            object-fit: cover;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            color: #333;
+            margin: 15px 0;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: #666;
+            padding: 0 20px 20px;
+        }
+
+        /* Read More Button Styling */
+        .read-more-btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #0175ff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .read-more-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            margin: 40px auto;
+            padding: 40px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 60%;
+        }
+
+        .newsletter input {
+            padding: 10px;
+            width: 70%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+
+        .newsletter button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #0175ff;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .newsletter button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Review Section */
+        .review-container {
+            margin: 40px auto;
+            padding: 40px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 60%;
+        }
+
+        .review-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .review-container input[type="text"], 
+        .review-container input[type="file"], 
+        .review-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .review-container input[type="file"] {
+            padding: 5px;
+        }
+
+        .review-container textarea {
+            height: 150px;
+            resize: none;
+        }
+
+        .review-container button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #0175ff;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .review-container button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #f8f9fc;
+            padding: 20px 0;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        footer a {
+            color: #0175ff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            margin: 10px 0;
+        }
+
+        .footer-links a {
+            margin: 0 10px;
+        }
+        /* Testimonials Section */
+.testimonials {
+    background-color: #f8f9fc;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.testimonials h2 {
+    font-size: 2rem;
+    color: #000000;
+    margin-bottom: 40px;
+}
+
+.testimonial-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.testimonial {
+    background-color: white;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    transition: transform 0.3s ease;
+}
+
+.testimonial:hover {
+    transform: translateY(-10px);
+}
+
+.testimonial p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.testimonial h4 {
+    font-size: 1.1rem;
+    color: #0175ff;
+    margin: 0;
+}
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    float: right;
+    padding: 10px;
+    background-color: white;
+    border-radius: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-section #user-name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.profile-section button {
+    padding: 6px 12px;
+    border: none;
+    background-color: #0175ff;
+    color: white;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile-section button:hover {
+    background-color: #0056b3;
+}
+/* Optional: style login/signup buttons similarly */
+.login-signup-buttons a {
+    margin: 0 10px;
+    font-size: 1rem;
+    color: #0175ff;
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid #0175ff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.login-signup-buttons a:hover {
+    background-color: #0175ff;
+    color: white;
+}
+
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Traveller's Verdict</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="Blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+            <a href="itenary.html">Generate Your Itenary</a>
+            <!-- The following links will be conditionally shown based on login status -->
+            <a id="profile-link" href="profile.html" style="display: none;">Profile</a>
+            <a id="logout-link" href="#" style="display: none;" onclick="logout()">Logout</a>
+            <a id="login-link" href="login.html">Login</a>
+            <a id="signup-link" class="signup" href="signup.html">Sign Up</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <h2>Discover Amazing Destinations</h2>
+        <div class="card-container">
+            <div class="card">
+                <img src="https://i.imgur.com/kEZbaSg.jpeg" alt="Hidden Gems in Bengal">
+                <h3>Hidden Places in Bengal</h3>
+                <p>We had an amazing week exploring the hills of Darjeeling and the spiritual calm of Kalimpong. The toy train ride....</p>
+                <a href="blog.html" class="read-more-btn">Read More</a>
+            </div>
+            <div class="card">
+                <img src="https://i.imgur.com/iFR41cV.jpeg" alt="Paris on a Budget">
+                <h3>Paris,France</h3>
+                <p>The city of love didn’t disappoint! Eiffel Tower views at sunset, fresh croissants ...</p>
+                <a href="blog.html" class="read-more-btn">Read More</a>
+            </div>
+            <div class="card">
+                <img src="https://i.imgur.com/p4N0GNB.jpeg" alt="Tokyo Food Guide">
+                <h3>Kyoto,Japan</h3>
+                <p>Kyoto is a beautiful blend of tradition and calm. I visited dozens of ancient temples like Kinkaku-ji and Fushimi Inari Shrine — absolutely mesmerizing. ...</p>
+                <a href="blog.html" class="read-more-btn">Read More</a>
+            </div>
+            <div class="card">
+                <img src="https://i.imgur.com/Sh2IZ4k.png" alt="Goa">
+                <h3>Goa with homies</h3>
+                <p>Goa never disappoints! We stayed near Baga Beach and rented scooties to explore hidden spots like...</p>
+                <a href="blog.html" class="read-more-btn">Read More</a>
+            </div>
+            <div class="card">
+                <img src="https://i.imgur.com/unbI2yy.jpeg" alt="Swiss alps ">
+                <h3>Swiss Alps,Switzerland</h3>
+                <p>Breathtaking views at every turn! I explored Zermatt and Jungfrau, and the scenery .....</p>
+                <a href="blog.html" class="read-more-btn">Read More</a>
+            </div>
+            <div class="card">
+                <img src="https://i.imgur.com/nH82nq6.jpeg" alt="machu pichu">
+                <h3>Mysteries of Machu Pichu</h3>
+                <p>A dream come true for any trekker! We did the Inca Trail hike — tough but worth every step....</p>
+                <a href="blog.html" class="read-more-btn">Read More</a>
+            </div>
+           
+            <div class="card">
+                <img src="https://i.imgur.com/QYzvZLg.jpeg" alt="new york">
+                <h3>Business in New York</h3>
+                <p>My business trip to NYC was a whirlwind — meetings in Midtown, quick lunches at food trucks, and evenings catching skyline...</p>
+                <a href="blog.html" class="read-more-btn">Read More</a>
+            </div>
+            <div class="card">
+                <img src="https://i.imgur.com/TA9SDX5.png" alt="nomadic life">
+                <h3>Multiple (Vietnam, Georgia, Turkey)</h3>
+                <p>Living as a digital nomad has been liberating. I worked remotely from Hanoi, explored Batumi’s beaches, and hiked the hills...</p>
+                <a href="blog.html" class="read-more-btn">Read More</a>
+            </div>
+            <div class="card">
+                <img src="https://i.imgur.com/DCFZBfX.jpeg" alt="chang mai">
+                <h3>Chiang Mai, Thailand</h3>
+                <p>Chiang Mai is a top destination for digital nomads. The cost of living is incredibly low—great apartments for under $500/month. Co-working spaces like Punspace and ...</p>
+                <a href="blog.html" class="read-more-btn">Read More</a>
+            </div>
+        </div>
+        <!-- Review Input Section -->
+        <div class="review-container">
+            <h2>Submit Your Review</h2>
+            <form id="reviewForm">
+                <input type="text" id="Name" placeholder="Name" required>
+                <input type="text" id="location" placeholder="Location" required>
+                <input type="text" id="purpose" placeholder="Purpose" required>
+                <input type="text" id="budget" placeholder="Budget" required>
+                <input type="text" id="transport" placeholder="Transport" required>
+                <div>
+                    <label for="photos">Upload Photos</label>
+                    <input type="file" id="photos" name="photos[]" multiple required>
+                </div>
+                <textarea id="review" placeholder="Write your review" required></textarea>
+                <button type="button" onclick="submitReview()">Submit Review</button>
+            </form>
+        </div>
+        
+    <script>
+        // Check if user is logged in by checking for the token in localStorage
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem("token");
+
+            if (token) {
+                // If user is logged in, hide login/signup and show profile/logout buttons
+                document.getElementById("profile-link").style.display = "inline-block";
+                document.getElementById("logout-link").style.display = "inline-block";
+                document.getElementById("login-link").style.display = "none";
+                document.getElementById("signup-link").style.display = "none";
+            } else {
+                // If not logged in, show login/signup
+                document.getElementById("login-link").style.display = "inline-block";
+                document.getElementById("signup-link").style.display = "inline-block";
+                document.getElementById("profile-link").style.display = "none";
+                document.getElementById("logout-link").style.display = "none";
+            }
+        });
+
+        // Logout function to clear localStorage and redirect to login page
+        function logout() {
+            localStorage.clear();
+            window.location.href = "login.html";  // Redirect to login page after logout
+        }
+    
+            function submitReview() {
+    const reviewData = {
+        Name: document.getElementById("Name").value,
+        location: document.getElementById("location").value,
+        purpose: document.getElementById("purpose").value,
+        budget: document.getElementById("budget").value,
+        transport: document.getElementById("transport").value,
+        review: document.getElementById("review").value
+    };
+
+    // Create FormData object
+    const formData = new FormData();
+    formData.append('Name', reviewData.Name);
+    formData.append('location', reviewData.location);
+    formData.append('purpose', reviewData.purpose);
+    formData.append('budget', reviewData.budget);
+    formData.append('transport', reviewData.transport);
+    formData.append('review', reviewData.review);
+
+    // Add files (images)
+    const files = document.getElementById('photos').files;
+    for (let i = 0; i < files.length; i++) {
+        formData.append('photos[]', files[i]);
+    }
+
+    fetch("http://127.0.0.1:5000/add_review", {
+        method: "POST",
+        
+    body: formData // Use FormData directly
+})
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message); // Show success message
+        document.getElementById("reviewForm").reset(); // Clear form
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+            
+            </script>
+            
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const token = localStorage.getItem("token");
+                    const userEmail = localStorage.getItem("userEmail");
+                
+                    const nav = document.querySelector(".nav-buttons");
+                    if (token && userEmail) {
+                        // Remove login/signup buttons
+                        nav.innerHTML = `
+                            <span class="user-info">👤 ${userEmail}</span>
+                            <button id="logoutBtn">Logout</button>
+                        `;
+                
+                        document.getElementById("logoutBtn").addEventListener("click", () => {
+                            localStorage.removeItem("token");
+                            localStorage.removeItem("userEmail");
+                            window.location.href = "login.html";
+                        });
+                    }
+                });
+                </script>
+                
+              
+        <!-- Newsletter Section -->
+        <div class="newsletter">
+            <h2>Stay Updated with the Latest Travel News</h2>
+            <p>Subscribe to our newsletter to receive the latest tips and deals</p>
+            <form id="newsletter-form" action="subscribe.php" method="POST">
+                <input type="email" id="newsletter-email" name="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </main>
+    <!-- Testimonials Section -->
+<section class="testimonials">
+    <h2>What Our Travelers Say about the website </h2>
+    <div class="testimonial-container">
+        <div class="testimonial">
+            <p>"Traveller's Verdict helped me find the perfect hidden getaway in Bengal! Loved the experience."</p>
+            <h4>- Priya S.</h4>
+        </div>
+        <div class="testimonial">
+            <p>"Thanks to this platform, my Switzerland trip was unforgettable. Great tips and easy to navigate!"</p>
+            <h4>- Alex M.</h4>
+        </div>
+        <div class="testimonial">
+            <p>"The Kyoto blog inspired me to explore Japan differently. Authentic and heartfelt reviews!"</p>
+            <h4>- Yuki T.</h4>
+        </div>
+    </div>
+</section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 Travellers Verdict. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms-of-service.html">Terms of Service</a>
+        </div>
+    </footer>
+</body>
+</html>
